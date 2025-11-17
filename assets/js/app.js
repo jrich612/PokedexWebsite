@@ -4,6 +4,7 @@ const text = "ditto";
 
 async function fetchData(){
     const pokemonSearch = document.getElementById("pokemonSearch").value.toLowerCase();
+    const displayPokemon = document.getElementById("pokemonPicture");
     try{
 
         const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${pokemonSearch}`);
@@ -14,12 +15,21 @@ async function fetchData(){
         // console.log(response);
         const data = await response.json();
         console.log(data);
-
+        const pokemonSprite = data.sprites.front_default;
+        document.getElementById("pokeName").textContent = data.name;
+        displayPokemon.src = pokemonSprite;
+        displayPokemon.style.display = "block";
+        document.getElementById("dexNum").textContent = "Dex ID: " + data.id;
+        document.getElementById("pokeHeight").textContent = "Height: " + data.height;
+        document.getElementById("pokeWeight").textContent = "Weight: " + data.weight;
+        const abilities = data.abilities.map(obj => obj.ability.name).join(", ");
+        document.getElementById("pokeAbi").textContent = "Abilities: " + abilities;
         return data;
     }
     catch(error){
         console.error(error);
     }
+
 }
 
 // async function pokemonSearch(){
