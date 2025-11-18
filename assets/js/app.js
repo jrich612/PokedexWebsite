@@ -43,12 +43,37 @@ async function displayData(){
         // console.log("hello");
         // console.log(response);
         const data = await response.json();
-        const initalPoke = data.results.map(obj => obj.name).join(" ");
+        const initalPoke = data.results.map(obj => obj.name);
+        const pokeLinks = data.results.map(obj => obj.url);
+        // const pokeMon = await fetch(pokeLinks);
+        // console.log(pokeLinks);
+        //  console.log(pokeMon);
         console.log(data);
-        // document.getElementById("pokeList").textContent = data.name + " " + data.id;
-        document.getElementById("pokeList").textContent = initalPoke;
-        document.getElementById("pokePic").src = data.sprites.front_default;
-        document.getElementById("pokePic").style.display = "block";
+        // document.getElementById("pokeList").textContent = data.name + " " + datdocument.getElementById("pokeList").textContent = initalPoke;a.id;
+        initalPoke.forEach(element => {
+            const curDiv = document.getElementById("pokeList");
+            const newDiv = document.createElement("div");
+
+            newDiv.textContent = element;
+            curDiv.appendChild(newDiv);
+        });
+        
+        pokeLinks.forEach(async element =>  {
+            const response = await fetch(element);
+            const newData = await response.json();
+            const curImg = document.getElementById("pokemonPicture");
+            const newImg = document.createElement("img");
+
+            newImg.src = newData.sprites.front_default;
+            newImg.style.width = "60px";    // or 40px, 80px, whatever you prefer
+            newImg.style.height = "60px";
+            newImg.style.objectFit = "contain";
+            newImg.style.display = "block";
+            curImg.style.display = "block";
+            curImg.appendChild(newImg);
+
+        })
+
         return data;
     }
     catch(error){
@@ -56,7 +81,7 @@ async function displayData(){
     }
 }
 
-displayData();
+
 // async function pokemonSearch(){
 //     const response = await fetchData();
 //     const pokemonSearch = document.getElementById("pokemonSearch").value.toLowerCase();
