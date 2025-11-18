@@ -32,6 +32,31 @@ async function fetchData(){
 
 }
 
+async function displayData(){
+
+    try{
+        
+        const response = await fetch(`https://pokeapi.co/api/v2/pokemon/?limit=1000&offset=0`);
+        if(!response.ok){
+            throw new Error("Could not fetch resources");
+        }
+        // console.log("hello");
+        // console.log(response);
+        const data = await response.json();
+        const initalPoke = data.results.map(obj => obj.name).join(" ");
+        console.log(data);
+        // document.getElementById("pokeList").textContent = data.name + " " + data.id;
+        document.getElementById("pokeList").textContent = initalPoke;
+        document.getElementById("pokePic").src = data.sprites.front_default;
+        document.getElementById("pokePic").style.display = "block";
+        return data;
+    }
+    catch(error){
+        console.error(error);
+    }
+}
+
+displayData();
 // async function pokemonSearch(){
 //     const response = await fetchData();
 //     const pokemonSearch = document.getElementById("pokemonSearch").value.toLowerCase();

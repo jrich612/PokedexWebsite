@@ -7,14 +7,19 @@
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body>
-    <input type="text" id="pokemonSearch" placeholder="Search...">
-    <button onclick="fetchData()" id="pokemonButton">Search</button>
+    <div class="row">
+        <input type="text" id="pokemonSearch" placeholder="Search...">
+        <button onclick="fetchData()" id="pokemonButton">Search</button>
+        <div class="right" id="pokeList"></div>
+        <img alt="pokemonImage" id="pokePic" style="display: none;">
+    </div>
     <h1 id="pokeName"></h1>
     <img alt="pokemonImage" id="pokemonPicture" style="display: none;">
     <h2 id="dexNum"></h2>
     <h3 id="pokeHeight"></h3>
     <h3 id="pokeWeight"></h3>
     <h4 id="pokeAbi"></h4>
+    <!-- <li id="pokeList" style="display: none"></li> -->
     <script src="assets\js\app.js"></script>
 </body>
 </html>
