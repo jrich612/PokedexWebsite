@@ -1,6 +1,9 @@
 
 // console.log("hello");
 const text = "ditto";
+function sleep(ms){
+    return new Promise(resolve => setTimeout(resolve, ms));
+}
 
 async function fetchData(){
     const pokemonSearch = document.getElementById("pokemonSearch").value.toLowerCase();
@@ -14,7 +17,6 @@ async function fetchData(){
         // console.log("hello");
         // console.log(response);
         const data = await response.json();
-        console.log(data);
         const pokemonSprite = data.sprites.front_default;
         document.getElementById("pokeName").textContent = data.name;
         displayPokemon.src = pokemonSprite;
@@ -24,6 +26,16 @@ async function fetchData(){
         document.getElementById("pokeWeight").textContent = "Weight: " + data.weight;
         const abilities = data.abilities.map(obj => obj.ability.name).join(", ");
         document.getElementById("pokeAbi").textContent = "Abilities: " + abilities;
+        
+        const abiDesc = data.abilities.map(obj => obj.ability.url);
+
+    
+        // for(i = 0; i < abiDesc.length; i++){
+        //     const newDesc = await fetch(abiDesc[i].url);
+        //     const newData = await newDesc.json();
+        //     console.log(newData.effect_entries.effect)
+        //     document.getElementById("abiDesc").textContent = newData.effect_entries.effect
+        // }
         return data;
     }
     catch(error){
@@ -44,35 +56,60 @@ async function displayData(){
         // console.log(response);
         const data = await response.json();
         const initalPoke = data.results.map(obj => obj.name);
-        const pokeLinks = data.results.map(obj => obj.url);
+        const pokeLinks = data.results.sort((a, b) => {
+            const idA = parseInt(a.url.split("/")[6]);
+            const idB = parseInt(b.url.split("/")[6]);
+            return idA - idB;
+        });
+
+        
         // const pokeMon = await fetch(pokeLinks);
         // console.log(pokeLinks);
         //  console.log(pokeMon);
-        console.log(data);
         // document.getElementById("pokeList").textContent = data.name + " " + datdocument.getElementById("pokeList").textContent = initalPoke;a.id;
-        initalPoke.forEach(element => {
-            const curDiv = document.getElementById("pokeList");
-            const newDiv = document.createElement("div");
+        // initalPoke.forEach(element => {
+        //     const curDiv = document.getElementById("pokeList");
+        //     const newDiv = document.createElement("div");
 
-            newDiv.textContent = element;
-            curDiv.appendChild(newDiv);
-        });
-        
-        pokeLinks.forEach(async element =>  {
-            const response = await fetch(element);
+        //     newDiv.textContent = element;
+        //     curDiv.appendChild(newDiv);
+        // });
+        const container = document.getElementById("pokeList");
+
+        for(let i = 0; i < pokeLinks.length; i++) {
+            // await sleep(100);
+
+            const response = await fetch(pokeLinks[i].url);
             const newData = await response.json();
-            const curImg = document.getElementById("pokemonPicture");
+
+            
+            const card = document.createElement("div");
+            card.classList.add("pokemon-card");
+
+            console.log(newData);
+            // const curDiv = document.getElementById("pokeList");
+            const newDiv = document.createElement("p");
+
+            newDiv.textContent = newData.name;
+            // curDiv.appendChild(newDiv);
+
+            // const curImg = document.getElementById("pokePic");
             const newImg = document.createElement("img");
 
             newImg.src = newData.sprites.front_default;
-            newImg.style.width = "60px";    // or 40px, 80px, whatever you prefer
-            newImg.style.height = "60px";
-            newImg.style.objectFit = "contain";
+            
+            // newImg.style.width = "80px";     // 🔥 shrink so they fit side-by-side
+            // newImg.style.height = "80px";
+            // newImg.style.margin = "4px";
             newImg.style.display = "block";
-            curImg.style.display = "block";
-            curImg.appendChild(newImg);
 
-        })
+            card.appendChild(newDiv);
+            card.appendChild(newImg);
+
+            container.appendChild(card);
+            // curImg.appendChild(newImg);
+
+        }
 
         return data;
     }
@@ -80,6 +117,9 @@ async function displayData(){
         console.error(error);
     }
 }
+
+displayData();
+
 
 
 // async function pokemonSearch(){

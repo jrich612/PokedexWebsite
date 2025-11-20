@@ -6,3 +6,21 @@
 .right {
     margin-left: 20px;
 }
+
+#pokePic {
+    border: 2px solid red;
+    min-height: 500px;
+    width: 100%;
+}
+
+.controls {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 20px;  /* space between controls and Pokémon */
+}
+
+.pokemon-container {
+    display: flex;
+    flex-wrap: wrap;       /* makes cards line up */
+    gap: 12px;
+}
